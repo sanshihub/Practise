@@ -1,0 +1,53 @@
+Summary of Bucketing in Apache Spark
+
+Bucketing is an optimization technique in Spark used for handling high cardinality columns (columns with a large number of distinct values). It improves query performance by organizing data into predefined buckets.
+
+Benefits of Bucketing
+
+1. Faster Data Retrieval – Spark skips irrelevant buckets, reducing search space.
+
+
+2. Join Optimization – Helps in efficient joining of large datasets.
+
+
+
+How to Use Bucketing?
+
+Bucketing is applied while writing data to disk using bucketBy():
+
+mydataframe_df.write \
+    .format("csv") \
+    .mode("overwrite") \
+    .bucketBy(4, "column_name") \
+    .saveAsTable("Database_name.Table_name")
+
+Here, bucketBy(4, "column_name") creates 4 buckets based on the column values.
+
+
+How Bucketing Works?
+
+If we bucket an ID column (1 to 100) into 4 buckets, records are distributed as:
+
+B1: 1-25
+
+B2: 26-50
+
+B3: 51-75
+
+B4: 76-100
+
+
+If we query id=60, Spark directly fetches B3, skipping B1, B2, and B4, thus improving performance.
+
+
+Difference Between Bucketing and Partitioning
+
+Partitioning: Data is split into physical files stored in HDFS.
+
+Bucketing: Uses a hash function to distribute records into a fixed number of buckets within a managed table.
+
+
+This makes bucketing better for high-cardinality columns where defining partitions dynamically is inefficient.
+
+Would you like a detailed code example or a practical use case? 🚀
+

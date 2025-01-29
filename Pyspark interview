@@ -1,0 +1,300 @@
+Here is the extracted text from your image, followed by answers and examples for each question.
+
+
+---
+
+Azure Data Engineer Interview Questions and Answers
+
+Project-Based Questions
+
+1) Tell me about your project. Explain it end to end.
+
+Answer:
+
+Start with an overview: Business domain, data sources, and architecture.
+
+Describe ingestion, processing, transformation, and storage.
+
+Mention tools used (ADF, ADLS, Databricks, Synapse, etc.).
+
+Discuss challenges and optimizations applied.
+
+
+Example:
+"In my recent project, we built a real-time customer analytics platform using Azure Data Factory for ingestion, ADLS for storage, and Databricks for processing. We optimized costs by partitioning storage and using delta tables. Data was finally pushed to Power BI for reporting."
+
+
+---
+
+2) On what measure have you mentioned about storage cost decrease and cost optimization?
+
+Answer:
+
+Optimized file formats (Parquet, Delta) instead of CSV.
+
+Partitioning and compression to reduce storage.
+
+Lifecycle policies (moving old data to cold storage).
+
+Incremental loads instead of full refresh.
+
+
+Example:
+"We reduced storage costs by switching from CSV to Parquet, enabling auto-compaction in Delta Lake, and implementing retention policies to archive older data in cold storage."
+
+
+---
+
+ADF and ADLS Questions
+
+3) There are 10 million CSV files in ADLS Gen2. How will you read and process them using Azure Data Factory?
+
+Answer:
+
+Use wildcard paths to dynamically pick files.
+
+Use Mapping Data Flow for transformation.
+
+Use Parallelism (partitioning) to process in batches.
+
+Enable Auto Scaling for better performance.
+
+
+Example:
+"We used ADF’s Copy Activity with a wildcard path to read multiple files in parallel and store processed data in ADLS. A Databricks notebook was triggered for transformation, leveraging Spark’s distributed computing."
+
+
+---
+
+4) What is Integration Runtime in ADF?
+
+Answer:
+Integration Runtime (IR) enables ADF to connect to different sources.
+
+Azure IR: For cloud-based processing.
+
+Self-hosted IR: For on-premises data sources.
+
+SSIS IR: To run SSIS packages in ADF.
+
+
+
+---
+
+5) What is the difference between variables and parameters in ADF?
+
+Answer:
+
+Parameters: Passed during execution, immutable once pipeline starts.
+
+Variables: Mutable, used for intermediate values inside the pipeline.
+
+
+
+---
+
+6) The pipeline is scheduled, and it got failed. How would you automate email alerts for failure?
+
+Answer:
+
+Use Failure dependency in ADF.
+
+Configure Logic Apps or Azure Function to send email alerts.
+
+
+
+---
+
+7) How do you handle exceptions in ADF?
+
+Answer:
+
+Use Try-Catch block in Data Flows.
+
+Use On Failure dependency in Pipelines.
+
+Log errors into SQL or ADLS.
+
+
+
+---
+
+8) If the ADF pipeline is running very slow, how would you approach and fix it?
+
+Answer:
+
+Use Parallel execution and partitioning.
+
+Optimize source queries (filter unwanted data).
+
+Use Data Flow Debugging to find bottlenecks.
+
+
+
+---
+
+9) What is the difference between Blob Storage and ADLS Gen2?
+
+Answer:
+
+Blob Storage: Object storage for unstructured data.
+
+ADLS Gen2: Optimized for big data, supports Hadoop APIs and Hierarchical Namespace (folders, ACLs).
+
+
+Why use ADLS Gen2?
+
+Better performance for analytics workloads.
+
+Supports fine-grained security (ACLs).
+
+
+
+---
+
+Azure Databricks Questions
+
+10) How do you connect ADLS Gen2 with Databricks?
+
+Answer:
+
+Using Service Principal
+
+Mount ADLS using DBFS
+
+Directly access via Spark (abfss:// URI).
+
+
+Example Code:
+
+configs = {
+  "fs.azure.account.auth.type": "OAuth",
+  "fs.azure.account.oauth.provider.type": "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider",
+  "fs.azure.account.oauth2.client.id": "<client-id>",
+  "fs.azure.account.oauth2.client.secret": "<client-secret>",
+  "fs.azure.account.oauth2.client.endpoint": "https://login.microsoftonline.com/<tenant-id>/oauth2/token"
+}
+dbutils.fs.mount(
+  source = "abfss://<container>@<storage-account>.dfs.core.windows.net/",
+  mount_point = "/mnt/adls",
+  extra_configs = configs
+)
+
+
+---
+
+11) What is Databricks runtime, and why do we need it?
+
+Answer:
+Databricks runtime is a preconfigured environment with Apache Spark, Delta Lake, ML libraries for optimized big data processing.
+
+
+---
+
+12) What are Databricks Workflows?
+
+Answer:
+Workflows automate notebook execution, tasks, and job scheduling in Databricks.
+
+
+---
+
+13) Explain the Medallion Architecture.
+
+Answer:
+A three-layered architecture in Databricks:
+
+1. Bronze Layer: Raw data ingestion.
+
+
+2. Silver Layer: Cleansed and transformed data.
+
+
+3. Gold Layer: Aggregated and optimized for analytics.
+
+
+
+
+---
+
+14) Explain Delta File Format. Why is it needed?
+
+Answer:
+Delta Lake is an enhanced Parquet format with ACID transactions, schema enforcement, and time travel.
+
+Why use Delta?
+
+Handles small file problems.
+
+Supports incremental updates.
+
+Enables time travel (rollback to previous versions).
+
+
+
+---
+
+15) A Facebook user writes data for each record. A new JSON log is created for every write. Why use Delta format instead of Data Lake?
+
+Answer:
+
+Delta merges multiple writes instead of creating separate files.
+
+Optimized performance with compaction and indexing.
+
+Reduces small file overhead.
+
+
+
+---
+
+16) How would you optimize a slow-running job in Databricks?
+
+Answer:
+
+Use Adaptive Query Execution (AQE).
+
+Optimize shuffle partitions.
+
+Use Delta Cache for faster reads.
+
+Use Photon Engine for optimized execution.
+
+
+
+---
+
+17) What optimization techniques have you worked on?
+
+Answer:
+
+Data Skipping (Indexing, Z-ordering).
+
+Partitioning & Bucketing.
+
+Broadcast joins vs. Shuffle joins.
+
+
+
+---
+
+18) How would you optimize job memory management in Databricks?
+
+Answer:
+
+Tune executor & driver memory.
+
+Use Garbage Collection (GC) tuning.
+
+Enable auto-scaling for clusters.
+
+
+
+---
+
+Summary
+
+This guide covers key Azure Data Engineering interview topics, including ADF, ADLS, Databricks, and Optimization techniques.
+
+Would you like hands-on coding examples for any specific topic? 🚀
+
